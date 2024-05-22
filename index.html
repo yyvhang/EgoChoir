@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description"
+    content="EgoChoir: Capturing 3D Human-Object Interaction Regions from Egocentric Views.">
+    <meta name="keywords" content="Human-Object Interaction, 3D Interaction">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EgoChoir: Capturing 3D Human-Object Interaction Regions from Egocentric Views</title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <style>
+        .overline {
+            text-decoration: overline;
+        }
+        h2 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+        }
+        .render_wrapper_small {
+			      position: relative;
+            height: 200px;
+         }
+         .render_wrapper {
+            position: relative;
+            max-height: 400px;
+            height: auto;
+            width: auto;
+        }
+        .render_wrapper_relative {
+            position: relative;
+            max-height: 300px;
+            max-width: 300px;
+            height: auto;
+            width: auto;
+        }
+        .render_wrapper_relative>img {
+          width: 300px;
+          height: 300px;
+        }
+        .render_div {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #interpolation-image-wrapper-car{
+            text-align: center;
+        }
+        #interpolation-image-wrapper-chair{
+            text-align: center;
+        }
+        .nested-columns {
+            margin-bottom: 0 !important;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="navbar-menu">
+          <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+            <a class="navbar-item" href="">
+            <span class="icon">
+                <i class="fas fa-home"></i>
+            </span>
+            </a>
+      
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                More Research
+              </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="https://yyvhang.github.io/publications/IAG/index.html">
+                  IAG-Net
+                </a>
+                <a class="navbar-item" href="https://yyvhang.github.io/LEMON/"> 
+                  LEMON
+                </a>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-body">
+          <div class="container is-max-desktop">
+            <div class="columns is-centered">
+              <div class="column has-text-centered">
+                <h1 class="title is-1 publication-title">EgoChoir: Capturing 3D Human-Object Interaction Regions from Egocentric Views</h1>
+                <div class="is-size-5 publication-authors">
+                  <span class="author-block">
+                    <a href="https://yyvhang.github.io">Yuhang Yang</a><sup>1</sup>,</span>
+                  <span class="author-block">
+                    <a href="">Wei Zhai</a><sup>1</sup>,</span>
+                  <span class="author-block">
+                    <a href="">Chengfeng Wang</a><sup>1</sup>,
+                  </span>
+                  <span class="author-block">
+                    <a href="">Chengjun Yu</a><sup>1</sup>,
+                  </span>
+                  <span class="author-block">
+                    <a href="https://scholar.google.com.hk/citations?hl=zh-CN&user=K7rTHNcAAAAJ">Yang Cao</a><sup>1,2</sup>,
+                  </span>
+                  <span class="author-block">
+                    <a href="https://scholar.google.com.hk/citations?hl=zh-CN&user=gDnBC1gAAAAJ">Zheng-Jun Zha</a><sup>1</sup>,
+                  </span>
+                </div>
+      
+                <div class="is-size-5 publication-authors">
+                  <span class="author-block"><sup>1</sup>University of Science and Technology of China</span>
+                  <span class="author-block"><sup>2</sup>Institute of Artificial Intelligence, Hefei Comprehensive National Science Center</span>
+                </div>
+      
+                <div class="column has-text-centered">
+                  <div class="publication-links">
+                    <!-- PDF Link. -->
+                    <span class="link-block">
+                      <a href=""
+                         class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="ai ai-arxiv"></i>
+                        </span>
+                        <span>arXiv</span>
+                      </a>
+                    </span>
+                    <!-- Video Link. -->
+                    <!-- <span class="link-block">
+                      <a href=""
+                         class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="fab fa-youtube"></i>
+                        </span>
+                        <span>Video</span>
+                      </a>
+                    </span> -->
+                    <!-- Code Link. -->
+                    <span class="link-block">
+                      <a href="https://github.com/yyvhang/EgoChoir_release"
+                         class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="fab fa-github"></i>
+                        </span>
+                        <span>Code</span>
+                        </a>
+                    </span>
+                    <!-- Dataset Link. -->
+                    <span class="link-block">
+                      <a href=""
+                         class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="far fa-images"></i>
+                        </span>
+                        <span>Data coming soon</span>
+                        </a>
+                  </div>
+      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section class="hero teaser">
+        <div class="container is-max-desktop">
+            <div class="hero-body">
+                <img src="./static/images/teaser.png" height="200%" />
+                  <p>
+                    EgoChoir takes egocentric frames and head motion from head-mounted devices, along with
+                    the 3D object, to capture 3D interaction regions, including human contact and object affordance. The
+                    human motion is just visualized for intuitive observation of contact, yet it is not utilized by EgoChoir.
+                  </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <!-- Abstract. -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Understanding egocentric human-object interaction (HOI) is a fundamental aspect of human-centric perception, facilitating applications like AR/VR 
+                and embodied AI. For the egocentric HOI, in addition to perceiving semantics e.g., ''what'' interaction is occurring, capturing ''where'' the 
+                interaction specifically manifests in 3D space is also crucial, which links the perception and operation. Existing methods primarily 
+                leverage observations of HOI to capture interaction regions from an exocentric view. However, incomplete observations of interacting parties in the 
+                egocentric view introduce ambiguity between visual observations and interaction contents, impairing their efficacy. From the egocentric view, humans 
+                integrate the visual cortex, cerebellum, and brain to internalize their intentions and interaction concepts of objects, allowing for the pre-formulation 
+                of interactions and making behaviors even when interaction regions are out of sight. In light of this, we propose harmonizing the visual appearance, head motion, 
+                and 3D object to excavate the object interaction concept and subject intention, jointly inferring 3D human contact and object affordance from egocentric videos. 
+                To achieve this, we present <b>EgoChoir</b>, which links object structures with interaction contexts inherent in appearance and head motion to reveal object 
+                affordance, further utilizing it to model human contact. Additionally, a gradient modulation is employed to adopt appropriate clues for capturing interaction 
+                regions across various egocentric scenarios. Moreover, 3D contact and affordance are annotated for egocentric videos collected from Ego-Exo4D and GIMO to support 
+                the task. Extensive experiments on them demonstrate the effectiveness and superiority of EgoChoir.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <br><br>
+    <h2 class="title is-3">Egocentric body interactions</h2>
+    <section class="hero is-light is-small">
+        <div class="hero-body">
+            <div class="container">
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item item-chair">
+                        <video poster="" id="chair" autoplay controls muted loop playsinline height="100%">
+                            <source src="./static/videos/body_chair_1.mp4"
+                                    type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="item item-Earphone">
+                      <video poster="" id="Earphone" autoplay controls muted loop playsinline height="100%">
+                          <source src="./static/videos/body_bed.mp4"
+                                  type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="item item-Bag">
+                      <video poster="" id="Bag" autoplay controls muted loop playsinline height="100%">
+                          <source src="./static/videos/body_chair_3.mp4"
+                                  type="video/mp4">
+                      </video>
+                    </div>
+                    <div class="item item-Knife">
+                      <video poster="" id="Knife" autoplay controls muted loop playsinline height="100%">
+                          <source src="./static/videos/body_chair_2.mp4"
+                                  type="video/mp4">
+                      </video>
+                    </div>
+                </div>
+                <div style="text-align: center;">The human motion is just visualized for intuitive observation of contact, yet it is not utilized by EgoChoir. </div>
+            </div>
+        </div>
+    </section>
+
+    <br><br>
+    <h2 class="title is-3">Egocentric hand interactions</h2>
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+          <div class="container">
+              <div id="results-carousel" class="carousel results-carousel">
+                  <div class="item item-chair">
+                      <video poster="" id="chair" autoplay controls muted loop playsinline height="100%">
+                          <source src="./static/videos/knife.mp4"
+                                  type="video/mp4">
+                      </video>
+                  </div>
+                  <div class="item item-Earphone">
+                    <video poster="" id="Earphone" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/bottle.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-Bag">
+                    <video poster="" id="Bag" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/violin.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-Knife">
+                    <video poster="" id="Knife" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/guitar.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <br><br>
+    <h2 class="title is-3">Comparsion with LEMON</h2>
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+          <div class="container">
+              <div id="results-carousel" class="carousel results-carousel">
+                  <div class="item item-chair">
+                      <video poster="" id="chair" autoplay controls muted loop playsinline height="100%">
+                          <source src="./static/videos/compare_bed.mp4"
+                                  type="video/mp4">
+                      </video>
+                  </div>
+                  <div class="item item-Earphone">
+                    <video poster="" id="Earphone" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/compare_Chair.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-Bag">
+                    <video poster="" id="Bag" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/compare_kettle.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-Knife">
+                    <video poster="" id="Knife" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/compare_piano.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+    <br><br>
+    <h2 class="title is-3">Interaction with multiple objects</h2>
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+          <div class="container">
+              <div id="results-carousel" class="carousel results-carousel">
+                  <div class="item item-chair">
+                      <video poster="" id="chair" autoplay controls muted loop playsinline height="100%">
+                          <source src="./static/videos/multiobj_1.mp4"
+                                  type="video/mp4">
+                      </video>
+                  </div>
+                  <div class="item item-Earphone">
+                    <video poster="" id="Earphone" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/multiobj_2.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-Bag">
+                    <video poster="" id="Bag" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/multiobj_3.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+                  <div class="item item-Knife">
+                    <video poster="" id="Knife" autoplay controls muted loop playsinline height="100%">
+                        <source src="./static/videos/multiobj_4.mp4"
+                                type="video/mp4">
+                    </video>
+                  </div>
+              </div>
+              <div style="text-align: center;">Please zoom in for better visualization, especially the contact with hands. </div>
+          </div>
+      </div>
+    </section>
+
+    <br><br>
+    <h2 class="title is-3">Dynamic Affordance</h2>
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <!-- Visual Effects. -->
+          <div class="column">
+            <div class="content">
+              <p>
+                As the interaction content varies, the object affordance changes, such as grasp and cut of the knife.
+              </p>
+              <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+                <source src="./static/videos/multi_Knife.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <!--/ Visual Effects. -->
+    
+          <!-- Matting. -->
+          <div class="column">
+            <div class="columns is-centered">
+              <div class="column content">
+                <p>
+                  As the interaction content varies, the object affordance changes, such as grasp and pour of the kettle.
+                </p>
+                <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+                  <source src="./static/videos/multi_kettle.mp4"
+                          type="video/mp4">
+                </video>
+              </div>
+    
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="container is-max-desktop">
+                <div class="hero-body">
+                    <h2 class="title is-4">Method Overview</h2>
+                    <img src="./static/images/method.png" height="150%" />
+                      <p>
+                        EgoChoir first employs modality-wise encoders to extract features, in which
+                        the motion encoder is pre-trained by minimizing the distance between visual disparity and motion
+                        disparity. Then, it takes them to excavate the object interaction concept and subject intention,
+                        modeling the affordance and contact through parallel cross-attention with gradient modulation.
+                      </p>
+                </div>
+            </div>
+
+            <div class="container is-max-desktop">
+                <div class="hero-body">
+                    <h2 class="title is-4">Data Annotation</h2>
+                    <img src="./static/images/annotation.png" height="150%" />
+                      <p>
+                        Annotation of 3D human contact and object affordance. (a) Annotate contact for data in Ego-Exo4D. (b) Contact annotation for GIMO dataset, 
+                        including calculations and manual refinement. (c) 3D object affordance annotation, with the red region denoting that with higher
+                        interaction probability, while the blue region indicates the adjacent propagable region.
+                      </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+          <h2 class="title">BibTeX</h2>
+          <pre><code>
+
+          </code></pre>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+          <div class="content has-text-centered">
+            <a class="icon-link"
+               href="">
+              <i class="fas fa-file-pdf"></i>
+            </a>
+            <a class="icon-link" href="https://github.com/yyvhang/EgoChoir_release" class="external-link" disabled>
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+          <div class="columns is-centered">
+            <div class="column is-8">
+              <div class="content">
+                <p>
+                  This website is licensed under a <a rel="license"
+                                                      href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                  Commons Attribution-ShareAlike 4.0 International License</a>.
+                </p>
+                <p>
+                  Source code mainly borrowed from <a href="https://keunhong.com/">Keunhong Park</a>'s <a
+                                      href="https://nerfies.github.io/">Nerfies website</a>. Please remember to remove the analytics code included in the header of the website which
+                  you do not want on your website. Please contact <a
+                  href="https://yyvhang.github.io">Yuhang Yang</a> for the feedback and questions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script
+    async
+    src="skin/custom/unpkg.com_es-module-shims@1.3.6_dist_es-module-shims.js"
+    ></script>
+    
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "./js/three.module.js"
+      }
+    }
+    </script>
+    
+    <script type="module">
+    import * as THREE from "three";
+    
+    import { PLYLoader } from "./js/PLYLoader.js";
+    import { OrbitControls } from "./js/OrbitControls.js";
+    let div_to_scene = {
+      hot1: {
+        color: null,
+      },
+      hot2: {
+        color: null,
+      },
+      hot3: {
+        color: null,
+      },
+      hot4: {
+        color: null,
+      },
+    
+      nat1: {
+        color: null,
+      },
+      nat2: {
+        color: null,
+      },
+      nat3: {
+        color: null,
+      },
+      nat4: {
+        color: null,
+      },
+    
+      damon1: {
+        color: null,
+      },
+      damon1_support: {
+        color: null,
+      },
+      damon2: {
+        color: null,
+      },
+      damon2_support: {
+        color: null,
+      },
+      damon3: {
+        color: null,
+      },
+      damon3_support: {
+        color: null,
+      },
+      damon4: {
+        color: null,
+      },
+      damon4_support: {
+        color: null,
+      }
+    };
+    let mouse_button_down = false;
+    let list_of_orbit_controls = [];
+    
+    function setup_camera(div_name) {
+      let container = document.getElementById(div_name);
+      let width = container.parentElement.clientWidth;
+      let height = container.parentElement.clientHeight;
+      console.log(width, height);
+      let camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 50);
+      let camera_init_position = new THREE.Vector3(0, 0, 2.2);
+      camera_init_position = camera_init_position.multiplyScalar(1.5);
+      camera.position.set(
+        camera_init_position.x,
+        camera_init_position.y,
+        camera_init_position.z
+      );
+      return camera;
+    }
+    
+    function setup_render_divs(div_name, mesh_path) {
+      let camera = setup_camera(div_name);
+      let orbit_control = create_render_div(camera, div_name, mesh_path);
+      list_of_orbit_controls.push(orbit_control);
+    }
+    
+    function create_render_div(camera, div_id, mesh_path) {
+      let container;
+      let renderer, controls;
+    
+      init();
+      animate();
+    
+      function init() {
+        container = document.getElementById(div_id);
+        let width = container.parentElement.clientWidth;
+        let height = container.parentElement.clientHeight;
+    
+        div_to_scene[div_id]["color"] = new THREE.Scene();
+        div_to_scene[div_id]["color"].background = new THREE.Color( 0xffffff );
+    
+        // PLY file
+    
+        const loader = new PLYLoader();
+        loader.load(mesh_path, function (geometry) {
+            geometry.computeVertexNormals();
+            let material_color = new THREE.MeshPhongMaterial( { 
+              color: 0xcce6ff, 
+              vertexColors: THREE.VertexColors,
+              specular: 0x222222,
+              shininess: 10,
+            });
+    
+            const mesh_color = new THREE.Mesh(geometry, material_color);
+            div_to_scene[div_id]["color"].add(mesh_color);
+          },
+          (xhr) => {
+            console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    
+        // lights
+    
+        add_lights(div_to_scene[div_id]["color"]);
+    
+        // renderer
+    
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(width, height);
+        renderer.outputEncoding = THREE.sRGBEncoding;
+    
+        container.appendChild(renderer.domElement);
+    
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = false;
+        controls.autoRotate = true;
+    
+        // resize
+    
+        window.addEventListener("resize", onWindowResize);
+        controls.addEventListener("start", function () {
+          controls.autoRotate = false;
+        });
+      }
+      function onWindowResize() {
+        let width = container.clientWidth;
+        let height = container.clientHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      }
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        render();
+      }
+    
+      function render() {
+        renderer.render( div_to_scene[div_id]["color"], camera );
+        controls.update();
+      }
+    
+      return controls;
+    }
+    
+    function add_lights(scene) {
+      scene.add(new THREE.HemisphereLight(0x443333, 0x111122, 0.05));
+      const spotLight = new THREE.SpotLight(0xffffff, 0.5);
+      spotLight.position.set(0.0, 0.5, 1);
+      const spotLight2 = new THREE.SpotLight(0xffffff, 0.25);
+      spotLight2.position.set(-2, 0.3, -0.2);
+      const spotLight3 = new THREE.SpotLight(0xffffff, 0.25);
+      spotLight3.position.set(2, -0.3, 0.2);
+      const spotLight4 = new THREE.SpotLight(0xffffff, 0.25);
+      spotLight4.position.set(0.0, 1, -2);
+      const spotLight5 = new THREE.SpotLight(0xffffff, 0.05);
+      spotLight5.position.set(0, -2.5, -1);
+      spotLight.position.multiplyScalar(10);
+      scene.add(spotLight);
+      scene.add(spotLight2);
+      scene.add(spotLight3);
+      scene.add(spotLight4);
+      scene.add(spotLight5);
+    }
+    
+    document.addEventListener("keydown", logKey);
+    
+    function logKey(evt) {
+      if (evt.keyCode === 82 && !mouse_button_down) {
+        reset_orbit_controls();
+      }
+    }
+    
+    function reset_orbit_controls() {
+      list_of_orbit_controls.forEach((oc) => {
+        oc.reset();
+        oc.autoRotate = false;
+      });
+    }
+    
+    document.body.onmousedown = function (evt) {
+      if (evt.button === 0) mouse_button_down = true;
+    };
+    document.body.onmouseup = function (evt) {
+      if (evt.button === 0) mouse_button_down = false;
+    };
+    
+    window.onload = function () {
+      let slider = document.getElementsByClassName("slider")[0];
+      slider.removeAttribute("tabIndex");
+      setup_render_divs(
+        "hot1",
+        "./static/plys/Carry_Backpack_01.ply"
+      );
+      setup_render_divs(
+        "hot2",
+        "./static/plys/bag_aff.ply"
+      );
+      setup_render_divs(
+        "hot3",
+        "./models/hot/deco_vcoco_000000537864.ply"
+      );
+      setup_render_divs(
+        "hot4",
+        "./models/hot/deco_vcoco_000000576589.ply"
+      );
+    
+      setup_render_divs(
+        "nat1",
+        "./models/internet_yoga/pexels-photo-207569.ply"
+      );
+      setup_render_divs(
+        "nat2",
+        "./models/internet_yoga/pexels-photo-3622517.ply"
+      );
+      setup_render_divs(
+        "nat3",
+        "./models/internet_yoga/pexels-photo-15732209.ply"
+      );
+      setup_render_divs(
+        "nat4",
+        "./models/internet_yoga/213.ply"
+      );
+    
+      setup_render_divs(
+        "damon1",
+        "./models/damon/hake_train2015_HICO_train2015_00000082.ply"
+      );
+      setup_render_divs(
+        "damon1_support",
+        "./models/damon/hake_train2015_HICO_train2015_00000082_support.ply"
+      );
+      setup_render_divs(
+        "damon2",
+        "./models/damon/vcoco_000000350231.ply"
+      );
+      setup_render_divs(
+        "damon2_support",
+        "./models/damon/vcoco_000000350231_support.ply"
+      );
+      setup_render_divs(
+        "damon3",
+        "./models/damon/vcoco_000000420649.ply"
+      );
+      setup_render_divs(
+        "damon3_support",
+        "./models/damon/vcoco_000000420649_support.ply"
+      );
+      setup_render_divs(
+        "damon4",
+        "./models/damon/vcoco_000000577928.ply"
+      );
+      setup_render_divs(
+        "damon4_support",
+        "./models/damon/vcoco_000000577928_support.ply"
+      );
+    };
+    </script>
+</body>
+
+</html>
